@@ -1,0 +1,165 @@
+create database june1
+
+use june1
+
+CREATE TABLE sales (
+  customer_id VARCHAR(1),
+  order_date DATE,
+  product_id INTEGER
+);
+
+
+INSERT INTO sales
+  (customer_id, order_date, product_id)
+VALUES
+  ('A', '2021-01-01', '1'),
+  ('A', '2021-01-01', '2'),
+  ('A', '2021-01-07', '2'),
+  ('A', '2021-01-10', '3'),
+  ('A', '2021-01-11', '3'),
+  ('A', '2021-01-11', '3'),
+  ('B', '2021-01-01', '2'),
+  ('B', '2021-01-02', '2'),
+  ('B', '2021-01-04', '1'),
+  ('B', '2021-01-11', '1'),
+  ('B', '2021-01-16', '3'),
+  ('B', '2021-02-01', '3'),
+  ('C', '2021-01-01', '3'),
+  ('C', '2021-01-01', '3'),
+  ('C', '2021-01-07', '3');
+ 
+  CREATE TABLE menu (
+  product_id INTEGER,
+  product_name VARCHAR(5),
+  price INTEGER
+);
+ 
+	INSERT INTO menu
+  (product_id, product_name, price)
+VALUES
+  ('1', 'sushi', '10'),
+  ('2', 'curry', '15'),
+  ('3', 'ramen', '12');
+  
+  
+CREATE TABLE members (
+  customer_id VARCHAR(1),
+  join_date DATE
+);
+
+INSERT INTO members
+  (customer_id, join_date)
+VALUES
+  ('A', '2021-01-07'),
+  ('B', '2021-01-09');
+  
+1>SELECT sales.customer_id ,
+SUM(menu.price) AS Amount
+FROM sales join menu
+ON sales.product_id=menu.product_id
+GROUP BY sales.customer_id 
+
+
+
+2>SELECT sales.customer_id,COUNT(DISTINCT sales.order_date) 
+AS Time
+FROM sales
+GROUP BY sales.customer_id
+
+3>
+SELECT sales.customer_id AS customer,menu.product_name as Dish,MIN(sales.order_date)
+AS first_order
+FROM sales JOIN menu 
+ON sales.product_id=menu.product_id
+WHERE fisrt_order=1
+GROUP BY customer
+
+4:
+SELECT  m.product_name , Count(s.product_id) AS count
+FROM  menu m
+JOIN sales s
+ON m.product_id = s.product_id
+GROUP BY m.product_name
+ORDER BY Count(s.product_id) desc
+
+5>
+  SELECT 
+    sales.customer_id AS customer, 
+    menu.product_name, 
+    COUNT(menu.product_id) AS order_count
+  FROM menu
+  JOIN sales
+    ON menu.product_id = sales.product_id
+  GROUP BY sales.customer_id, menu.product_name
+ORDER BY order_count DESC
+
+6>
+SELECT sales.customer_id AS customer,menu.product_name AS Product,sales.order_date  AS orderdate
+FROM sales JOIN menu 
+ON sales.product_id=menu.product_id
+JOIN members
+ON sales.customer_id=members.customer_id
+WHERE order_date>join_date
+
+
+7>
+SELECT sales.customer_id AS customer,menu.product_name  AS Product
+FROM sales JOIN menu 
+ON sales.product_id=menu.product_id
+JOIN members
+ON sales.customer_id=members.customer_id
+WHERE order_date>join_date
+ORDER BY Customer
+
+8>
+SELECT sales.customer_id AS customer,COUNT(menu.product_name) AS Item,SUM(menu.price)
+ AS Total_amount
+ FROM sales JOIN menu 
+ON sales.product_id=menu.product_id
+JOIN members
+ON sales.customer_id=members.customer_id
+AND order_date<join_date
+GROUP BY customer
+ORDER BY customer ASC
+
+9>
+SELECT sales.customer_id AS customer,SUM(menu.price) AS Total_spent,
+SUM(CASE WHEN product_name='sushi' THEN Price*20
+ELSE price*10  END) AS Total_point
+ FROM sales JOIN menu 
+ON sales.product_id=menu.product_id
+GROUP BY customer
+
+10>
+SELECT sales.customer_id AS customer,
+SUM(CASE WHEN sales.order_date >=members.join_date THEN Price*20
+ ELSE price END) AS Total_point
+FROM sales JOIN members
+ON sales.customer_id=members.customer_id
+JOIN menu ON sales.product_id=menu.product_id
+GROUP BY customer
+ORDER BY 1 ASC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  

@@ -67,12 +67,11 @@ FROM sales
 GROUP BY sales.customer_id
 
 3>
-SELECT sales.customer_id AS customer,menu.product_name as Dish,MIN(sales.order_date)
-AS first_order
+SELECT sales.customer_id AS customer,min(menu.product_name )as Dish
 FROM sales JOIN menu 
 ON sales.product_id=menu.product_id
-WHERE fisrt_order=1
 GROUP BY customer
+ORDER BY customer
 
 4:
 SELECT  m.product_name , Count(s.product_id) AS count

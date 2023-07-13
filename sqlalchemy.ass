@@ -1,0 +1,12 @@
+import  sqlalchemy as sa
+import pandas as pd
+engine = sa.create_engine("mysql://root:bigdata@123@localhost/mydatabase1")
+
+conn = engine.connect()
+
+query = sa.text("SELECT * FROM customers")
+output = conn.execute(query)
+result = output.fetchall()
+
+data = pd.DataFrame(result)
+print(data)

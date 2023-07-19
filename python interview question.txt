@@ -1,0 +1,197 @@
+1. What is init keyword ?
+Ans:In Python, the __init__ method is a special method, also known as a constructor, that is automatically called when an object of a class is created. It initializes the attributes of the object and performs any necessary setup or initialization.
+
+2.  What is self keyword ?
+Ans:In Python, the self keyword is used as the conventional name for the first parameter of a method within a class. It represents the instance of the class itself and is used to access the attributes and methods of that instance.
+
+The self parameter is automatically passed to every method defined within a class, including special methods like __init__ (constructor) or other custom-defined methods.
+
+
+3>lambda function?
+In programming, a lambda function (also known as an anonymous function or a lambda expression) is a way to define and create small, anonymous functions without explicitly defining a named function.
+
+Lambda functions are often used in situations where a function is required for a short period or as an argument to another function. 
+
+They provide a concise way to define simple functions without the need for a complete function definition.
+
+
+4> Difference between lambda and normal function?
+
+Ans:
+In general, lambda functions are used for simple, one-time operations and are often used as arguments in higher-order functions. Normal functions are more suitable for complex operations, reusable code blocks, and cases where code readability and maintainability are important.
+
+ lambda:more common syntax then normal function.
+
+:Lambda functions are defined using the lambda keyword,followed by the parameters and a colon, and then the expression.
+
+: Lambda functions are anonymous functions, meaning they don't have a specified name.They are typically used for short, one-time use cases and don't require a separate function definition. 
+
+:Lambda functions are function objects that can be assigned to variables or used as arguments in other functions directly
+
+: Lambda functions are generally used for simple and concise expressions. 
+
+
+Normal function:Normal functions are defined using the def keyword, followed by the function name, parameters in parentheses, a colon, and then the function body.
+
+:Normal functions, on the other hand, have a name and are defined separately from their use.
+
+:Normal functions are defined with a name and a :function body and can be called by their name.
+
+:Normal functions can be more extensive and complex, allowing multiple statements, control flow, and the ability to define reusable code blocks.
+
+
+5> What are generators?
+
+Generators in Python are a type of iterable, which means they can be iterated over using a loop or consumed by other functions that expect an iterable. 
+
+Generators provide a convenient way to create iterators, enabling the generation of a sequence of values on-the-fly, without needing to store them all in memory at once.
+
+
+The main difference between generators and normal functions is that generators use the yield keyword instead of return to return a value.
+
+Generators provide a powerful tool for lazy evaluation, memory efficiency, and handling large or infinite sequences of values in Python.
+
+
+
+
+6>  Python is compiled or interpreted language ? what does it mean?
+
+ython is an interpreted language, which means that Python code is executed line by line at runtime without the need for prior compilation into machine code. Here's what it means for Python to be an interpreted language:
+
+7>
+What is the difference between list and tuples in Python?
+
+Mutability: Lists are mutable, which means their elements can be modified after creation. Elements can be added, removed, or changed using various list methods. Tuples, on the other hand, are immutable, meaning their elements cannot be modified once the tuple is created. The entire tuple would need to be recreated if any changes are desired.
+
+
+Syntax: Lists are defined using square brackets [], while tuples are defined using parentheses (). For example:
+
+python
+Copy code
+my_list = [1, 2, 3]
+my_tuple = (1, 2, 3)
+
+Performance: Lists require more memory compared to tuples because lists have additional functionality to support mutation. Tuples, being immutable, are more memory-efficient. Additionally, certain operations on tuples, like indexing or iterating, can be faster than on lists.
+
+Return values: Lists are commonly used to store and return multiple values from a function. Tuples are also used for this purpose, and they can be particularly useful when the order of the values is important and should not be modified.
+
+Iteration: Both lists and tuples can be iterated over using loops or comprehensions. They can also be accessed using indexing and slicing syntax.
+
+It's important to note that lists and tuples have different use cases due to their mutability and immutability. Lists are used when there is a need for a dynamic, modifiable sequence, while tuples are used for immutable collections of related data. Choosing between lists and tuples depends on the specific requirements of your program and the nature of the data you need to store.
+
+
+8>  What is the difference between list and set in Python?
+In Python, both lists and sets are used to store collections of elements. However, there are several key differences between lists and sets:
+
+Ordering: Lists maintain the order of elements as they are added, meaning the position of each element is preserved. Sets, on the other hand, do not maintain any specific order for their elements. The order of elements in a set can change, and there is no inherent index-based access.
+
+Uniqueness: Lists allow duplicate elements, meaning you can have multiple occurrences of the same value in a list. Sets, however, only allow unique elements. If you try to add a duplicate element to a set, it will be ignored.
+
+Mutability: Lists are mutable, meaning you can modify their elements after creation. You can add, remove, or change elements in a list. Sets are also mutable, allowing for the addition and removal of elements. However, once a set is created, you cannot change individual elements because sets are based on hashable values.
+
+Membership and Lookup: Lists provide efficient access to elements based on their index. You can retrieve an element by its index using list indexing syntax. Sets, on the other hand, do not provide direct indexing. Instead, sets use hash-based lookup, making membership checks and element retrieval faster for large collections.
+
+Iterability: Both lists and sets are iterable, meaning you can iterate over their elements using loops or comprehensions. However, the order of iteration is not guaranteed for sets.
+
+
+
+9>. When to use dictionary?
+
+Dictionaries in Python are used when you need to store and retrieve data in a key-value format. They are highly flexible and efficient data structures that allow you to associate values (the "values" in the key-value pair) with unique keys. Here are some scenarios where dictionaries are commonly used:
+
+Mapping and lookup
+Uniqueness and Indexing
+Flexibility in Data Structure
+Counting and Frequency Analysis
+JSON-like Data Structures
+
+
+
+
+10>
+What are decorators?
+
+Decorators in Python are a powerful feature that allows you to modify or enhance the behavior of functions or classes without changing their original source code. Decorators provide a way to wrap or decorate a function or class with additional functionality, providing a clean and reusable way to modify their behavior.
+
+
+In Python, decorators are implemented using the @decorator_name syntax, where decorator_name refers to a function or class that will enhance the target function or class. The decorator is applied by placing it above the function or class definition.
+
+
+
+def my_decorator(func):
+    def wrapper():
+        print("Before function execution")
+        func()
+        print("After function execution")
+    return wrapper
+
+@my_decorator
+def greet():
+    print("Hello, world!")
+
+greet()
+
+
+11>What are Iterators?
+Iterators in Python are objects that allow for the traversal and sequential processing of a collection of elements. They provide a common interface for accessing elements one at a time, without exposing the underlying structure of the collection.
+
+iter(): The iter() function takes an iterable object as an argument and returns an iterator object. The iterator represents a stream of values that can be traversed using the next() function.
+
+next(): The next() function is used to fetch the next element from the iterator. It retrieves the next value in the iterator's sequence. When there are no more elements, it raises the StopIteration exception.
+
+
+my_list = [1, 2, 3, 4, 5]
+my_iter = iter(my_list)
+
+print(next(my_iter))  # Output: 1
+print(next(my_iter))  # Output: 2
+print(next(my_iter))  # Output: 3
+print(next(my_iter))  # Output: 4
+print(next(my_iter))  # Output: 5
+
+
+12>.   What is slicing?
+Slicing in Python is a technique used to extract a portion (or a subsequence) of a sequence object, such as strings, lists, tuples, or arrays.
+
+The general syntax for slicing is sequence[start:stop:step].
+
+
+my_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+my_string = "Hello, World!"
+
+print(my_list[1:5])     # Output: [2, 3, 4, 5]
+print(my_list[2:9:2])   # Output: [3, 5, 7, 9]
+print(my_list[:5])      # Output: [1, 2, 3, 4, 5]
+print(my_list[5:])      # Output: [6, 7, 8, 9, 10]
+print(my_list[::2])     # Output: [1, 3, 5, 7, 9]
+
+print(my_string[7:])    # Output: World!
+print(my_string[::-1])  # Output: !dlroW ,olleH
+
+
+
+13>diff b/w mutable and immutable>
+In programming, mutable and immutable are terms used to describe the ability of an object to be changed (mutated) after it is created. The distinction between mutable and immutable objects relates to their properties and behavior: 
+
+
+Mutable Objects: Mutable objects can be modified after they are created.
+
+Immutable Objects: Immutable objects, on the other hand, cannot be modified after they are created.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

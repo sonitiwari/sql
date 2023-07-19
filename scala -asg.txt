@@ -1,0 +1,264 @@
+object Main {
+  def sum(num1: Int, num2: Int): Int = {
+    return num1 + num2;
+  }
+
+  def main(args: Array[String]): Unit = {
+    println("Hello world!")
+    println(sum(num1 = 10, num2 = 12))
+    var age: Int = 70;
+    if (age > 60) {
+      println("senior citizen")
+    }
+    else if (age > 18) {
+      println("major")
+    }
+    else {
+      println("minor")
+    }
+
+
+    for (i <- 0 to 10)
+
+      println(i)
+    val x = 100;
+    println(x)
+    var x1 = "sonika"
+    println(x1)
+
+    val x3 = 105: Int;
+    println(x3)
+
+    object HelloWorld {
+      def main(args: Array[String]): Unit = {
+        println("Hello, world!")
+      }
+    }
+  }
+}
+
+object fact{
+  def main(args:Array[String]): Unit = {
+    println(fac(5))
+  def fac(x:Int):Int={
+     if (x==0)
+       return 1
+     else
+       return x*fac(x-1)
+    }
+
+  }
+
+}
+
+
+*************************
+1>Reverse a number:
+
+object man{
+  def main(args:Array[String]): Unit = {
+     println(rev(87))
+
+  def rev(s:Int):Int= {
+    var p:Int=0
+    p=s.toString.reverse.toInt
+    return p
+
+  }
+  }
+
+2> Create a Scala program to prompt customers for their name and age.
+
+ object son{
+  def main(args:Array[String]): Unit = {
+    import scala.io.StdIn._
+    val name = readLine("Enter your name: ")
+    println("Enter your age: ")
+    val age = readInt()
+    println(Console.BOLD)
+    print("Name: ")
+    print(Console.UNDERLINED)
+    print(name)
+    println(Console.BOLD)
+    print("Age: ")
+    print(Console.RESET)
+    print(age)
+
+  }
+
+}
+
+
+3>7th char of a given string?
+object son {
+  def main(args: Array[String]): Unit = {
+
+    val str = "http://allaboutscala.com"
+    val charToFind = str.charAt(7)
+    println(s"The 8th character literal in $str = $charToFind")
+
+  }
+
+}
+
+4>Create a Scala program that will ask the following question to a customer: "What is your favorite movie of all times?".
+
+  import scala.io.StdIn._
+  val favoriteMovie = readLine("What is your favorite movie of all times?")
+  println(s"$favoriteMovie is totally awesome!")
+
+5>Create a Scala program to calculate the total cost for a customer who is buying 10 Glazed donuts. You can assume that the price of each Glazed donut item is at $2.50. Notice the format of the $25.00 total cost literal, which is essentially at 2 decimal places.
+
+object man{
+     def main(args:Array[String]): Unit = {
+       val glazedDonut = "Glazed Donut"
+       val unitPrice = 2.50
+       val qtyPurchased = 10
+       val totalCost = qtyPurchased * unitPrice
+
+       println(f"""Total cost of $qtyPurchased $glazedDonut${if (qtyPurchased > 1) "s" else ""} = $$$totalCost%1.2f""")
+     }
+
+}
+
+6>Create a Scala program that will ask the following question to a customer: "What is your favorite movie of all times?".
+object son {
+  def main(args: Array[String]): Unit = {
+    import scala.io.StdIn._
+    val favoriteMovie = readLine("What is your favorite movie of all times?")
+    println(s"$favoriteMovie is totally awesome!")
+  }
+
+}
+
+7>Create a Scala program to output your name and favorite movie.
+object son {
+  def main(args: Array[String]): Unit = {
+
+    val firstName = "Nadim"
+    val lastName = "Bahadoor"
+    val favoriteMovie = "The Matrix"
+    val output =
+      s"""
+         | First Name: $firstName
+         | Last Name: $lastName
+         | Favorite Movie: $favoriteMovie
+   """.stripMargin
+  }
+}
+
+8> Create a Scala program to parse the corresponding values from the given String "Vanilla Donut 10 2.25", where the literal Vanilla Donut is a particular donut, the 10 literal is the quantity purchased, and 2.25 is the unit price of each Vanilla Donut. You further need to cast each token from the input String to their corresponding types, such as, an Int, Double or String.
+
+object main1{
+  def main(args: Array[String]): Unit = {
+    val donutBoughtStr = "Vanilla Donut 10 2.25"
+    val splitStr = donutBoughtStr.split(" ")
+    val donutType = splitStr(0)
+    val donutName = splitStr(1)
+    val donutQty = splitStr(2).toInt
+    val donutPrice = splitStr(3).toDouble
+    val donutOutput =
+      s"""
+         |Donut Name: $donutType $donutName
+         |Donut Price: $$$donutPrice
+         |Donut Purchased: $donutQty
+ """.stripMargin
+    println(donutOutput)
+
+    }
+}
+
+
+
+9>Create a Scala program and use an appropriate data structure to present the following key and value pairs of children and their ages: Bill is    9 years old, Jonny is 8 years old, Tommy is 11 years old, and Cindy is 13 years old. Sort out the corresponding child to age in reverse alphabet order.
+
+import java.util
+
+object ReverseAlphaOrder extends Ordering[String] {
+  def main(args: Array[String]): Unit = {
+
+    def compare(key1:String, key2:String) = key2.compareTo(key1)
+          val childrenToAges = TreeMap(
+           ("Bill",9),
+           ("Jonny",8),
+           ("Tommy",11),
+           ("Cindy", 13)
+            )(ReverseAlphaOrder)
+  println(s"Children to ages in reverse order by their names = ${childrenToAges.mkString(", ")}")
+
+}
+}
+
+
+10>Let us assume that you two shopping baskets with a bunch of items in each one. The first contains elements: "Cake", "Milk", "Cheese", "Toilet Paper", and the second one has the following items: "Bread", "Water", "Juice", "Milk", "Cheese". Write a Scala program to find the common items between the two shopping baskets. 
+
+
+object son {
+  def main(args: Array[String]): Unit = {
+
+    val setBasketOne = Set("Cake", "Milk", "Cheese", "Toilet Paper")
+    val setBasketTwo = Set("Bread", "Water", "Juice", "Milk", "Cheese")
+    val commonItems = setBasketOne intersect setBasketTwo
+    println(
+      s"""
+         |Shopping Basket One = ${setBasketOne.mkString(" - ")}
+         |Shopping Basket Two = ${setBasketTwo.mkString(" - ")}
+         |Common items are:
+ """.stripMargin)
+    commonItems.foreach(item => println(item.toUpperCase()))
+
+  }
+}
+
+11>
+Assume the following lexical coupon codes: "A", "BB", "CCC", "DDDD", "EEEEE". Write a Scala program to create a new set of coupon codes based on the above one. The format for each coupon code should be as follows: "coupon code - i", where the number i is derived from the length of each corresponding coupon code.
+object son {
+  def main(args: Array[String]): Unit = {
+
+    val codes = Seq("A", "BB", "CCC", "DDDD", "EEEEE")
+    val codesWithLength = codes.map { code =>
+      s"$code - ${code.length}"
+    }
+
+    codesWithLength.foreach(println(_))
+
+
+  }
+}
+
+
+12>Write a Scala program and use the Tuple type to represent items in a shopping baskets:
+"T-Shirt", "Medium", 10.99
+"Polo-Shirt", "Large", 4.99
+"Vest", "Small", 5.99
+"T-Shirt", "Small", 4.99
+"T-Shirt", "Small", 4.99
+You are free to use whichever data structure is appropriate to store the above-mentioned items. The Scala program should then output all "T-Shirt" items in upper case format. Note that all other items in the shopping basket should then be in the lower case format.
+Output:
+
+object son {
+  def main(args: Array[String]): Unit = {
+
+    val item1 = Tuple3("T-Shirt", "Medium", 10.99)
+    val item2 = Tuple3("Polo-Shirt", "Large", 4.99)
+    val item3 = Tuple3("Vest", "Small", 5.99)
+    val item4 = Tuple3("T-Shirt", "Small", 4.99)
+    val item5 = Tuple3("T-Shirt", "Small", 4.99)
+
+    val shoppingBasket = List(item1, item2, item3, item4, item5)
+    shoppingBasket.foreach {
+      case item if item._1 == "T-Shirt" =>
+        println(s"${item._1.toUpperCase()} is priced at $$${item._3} for the ${item._2} size.")
+      case item =>
+        println(s"${item._1.toLowerCase()} is priced at $$${item._3} for the ${item._2} size.")
+
+    }
+  }
+}
+
+
+
+
+
+
+

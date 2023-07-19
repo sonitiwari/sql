@@ -1,0 +1,267 @@
+1>  What is a trait ?
+Ans:Trait is a collection of abstract and non-abstract methods. You can create trait that can have all abstract methods or some abstract and some non-abstract methods.
+traits are a powerful language construct that allows for code reuse and composition.
+Traits in Scala provide a flexible and modular way to define reusable code components. They promote code reuse, composition, and interface-like behavior. 
+Traits are extensively used in Scala and are an essential part of the language's object-oriented and functional programming capabilities.
+
+
+2.       Difference between trait and sealed trait?
+Ans A trait, as described earlier, is a language construct that allows for code reuse by defining reusable code components with abstract and/or concrete methods. 
+
+Traits can be mixed into classes to extend their functionality.
+
+
+A sealed trait is a special kind of trait that provides a restricted hierarchy. A sealed trait can only be extended by classes or traits defined in the same file where the sealed trait is defined. 
+This restriction ensures that the hierarchy of subclasses is limited and known, allowing the compiler to perform exhaustive pattern matching.
+
+ Traits can be inherited by classes and other traits. A class can mix in multiple traits using the with keyword. Traits can also extend other traits, forming a trait inheritance hierarchy.
+
+Sealed traits, similar to regular traits, can be extended by classes and traits. However, the extension of a sealed trait is restricted to the same file.
+
+Sealed traits are commonly used in pattern matching expressions.
+
+When a sealed trait is used in a pattern match, the compiler ensures that all possible subclasses of the sealed trait are covered. 
+
+
+3>     What is an abstract class?
+
+In Scala, an abstract class is a class that cannot be instantiated directly and is meant to be extended by other classes.
+
+It serves as a base class, providing common functionality and defining abstract members that subclasses must implement.
+
+
+
+*Abstract classes cannot be instantiated directly using the new keyword. They are designed to be extended by concrete subclasses.
+
+
+abstract class Animal {
+  def sound(): Unit // abstract method
+  def eat(): Unit = println("Eating") // concrete method
+}
+
+
+*Abstract classes can also be mixed in with traits using the with keyword, allowing for multiple inheritance in Scala.
+scala
+Copy code
+abstract class Vehicle {
+  def start(): Unit
+}
+
+trait Flyable {
+  def fly(): Unit
+}
+
+class Airplane extends Vehicle with Flyable {
+  def start(): Unit = println("Starting airplane engine")
+  def fly(): Unit = println("Flying the airplane")
+}
+
+*Abstract classes provide a way to define common behavior and enforce certain contracts through abstract methods and fields. They serve as a blueprint for concrete subclasses, enabling code reuse and promoting consistent behavior across related classes. Abstract classes are often used when a class needs to provide a common interface while leaving certain implementation details to its subclasses.
+
+
+
+4>  What is the difference between an java interface and a scala trait?
+
+While both Java interfaces and Scala traits serve similar purposes of defining contracts and enabling code reuse, there are several key differences between them:
+
+ In Java interfaces, methods are declared without implementations, and implementing classes are responsible for providing the method implementations.
+
+Scala traits can include both abstract methods (methods without implementations) and concrete methods (methods with implementations). This allows traits to provide default behavior that implementing classes can inherit.
+
+Java interfaces only support single inheritance, meaning a class can implement single interfaces.
+
+Scala traits support multiple inheritance, allowing a class to mix in multiple traits using the with keyword. This provides more flexibility and code reuse options in Scala.
+
+
+Java interfaces can define constants (static final fields) but cannot contain non-constant fields. In Scala, traits can contain both abstract fields and concrete fields. Abstract fields in traits must be implemented by classes mixing in the trait.
+
+Java interfaces cannot have constructors, as they are not classes. In Scala, traits can have constructors, allowing initialization code to be executed when mixing in the trait.
+
+
+5>  What is a singleton?
+A Singleton object is an object which defines a single object of a class. 
+
+ A singleton class guarantees that only one instance of the class is created and shared among multiple parts of the application.
+
+The singleton instance is globally accessible, allowing other parts of the application to access its methods and properties.
+
+
+6> What is a higher order function?	
+
+A higher-order function is a function that can accept other functions as arguments and/or return functions as results. In other words, it treats functions as first-class citizens, enabling them to be manipulated and used as data within the programming language.
+
+
+7>     What is a closure?
+
+In Scala, a closure is a function that captures and retains references to variables from its enclosing lexical scope, even when the function is invoked outside that scope. It allows the function to access and use the captured variables even after the scope where those variables were defined has exited.
+
+
+8.   What is a companion object?
+In Scala, a companion object is an object that shares the same name with a class and is defined in the same source file. The companion object and class are tightly linked, and they can access each other's private members. 
+
+Object name and class name is same and declared in same file.
+
+
+9>       Nil vs Null vs null vs Nothing vs None vs Unit?
+
+
+Nil represents an empty list.
+Null is a subtype of all reference types and represents non-existent references.
+null is a special literal representing the absence of a value for reference types.
+Nothing is a bottom type indicating the absence of a value or a computation that doesn't produce a result.
+None is an object of type Option[Nothing], representing the absence of a value.
+Unit represents the absence of a meaningful value, often used in function signatures.
+
+
+
+Nil: Nil is an empty list of type List[Nothing]. It is commonly used to represent an empty list in Scala. It is equivalent to List() or List.empty. Nil is of type List[Nothing].
+
+Null: Null is a subtype of all reference types (i.e., any class, trait, or array). It represents a reference that doesn't refer to any object. It is primarily used in interoperation with Java code where null is commonly used for non-existent references. In Scala, it is generally recommended to use Option or None for representing absence instead of null.
+
+
+null: null is a special literal that represents the absence of a value for reference types. 
+
+Nothing: Nothing is a bottom type in Scala's type hierarchy. It is a subtype of every other type, and no instance of Nothing can exist. It is used to indicate that a computation does not produce a result or that a function never returns. 
+
+None is an object of type Option[Nothing], representing the absence of a value. It is used in functional programming to explicitly represent the absence of a value instead of using null.
+
+
+unit is a type that represents the absence of a meaningful value. It is similar to void in some other languages. In function signatures.
+
+
+10>   What is pure function?
+pure function : independent , if you call the function with same inputs 10 times then it results into same output.
+e.g : sum, litreToMillilitresbt is an open-source build tool created explicitly for Scala and Java projects. It aims to streamline the procedure of constructing, compiling, testing, and packaging applications, libraries, and frameworks.
+
+
+11>What is SBT and how have you used it?
+
+sbt is an open-source build tool created explicitly for Scala and Java projects. It aims to streamline the procedure of constructing, compiling, testing, and packaging applications, libraries, and frameworks.
+
+
+Project Setup: SBT is typically used to initialize and set up a new Scala project. It provides a project directory structure and a build definition file called build.
+
+Dependency Management: SBT offers sophisticated dependency management capabilities. I
+
+Compilation and Packaging: SBT compiles Scala source code and manages the project's compilation lifecycle.
+
+
+
+
+12.   What is currying?
+
+In currying, a function that takes multiple arguments is converted into a chain of functions, where each function takes one argument and returns another function until all arguments are consumed and a final result is produced. 
+
+This transformation enables the creation of specialized functions that can be reused or partially applied to create new functions.
+
+def add(x: Int)(y: Int): Int = x + y
+
+val addTwo: Int => Int = add(2)   // Partially applied function
+
+val result: Int = addTwo(5)       // Invoking the partially applied function
+
+println(result)  // Output: 7
+
+
+Currying is a powerful technique that facilitates functional programming principles such as function composition, code reuse, and creating specialized functions.
+
+
+13>   Difference between currying and higher-order functions?
+
+Currying and higher-order functions are two distinct concepts in functional programming, but they both involve working with functions. Here are the key differences between currying and higher-order functions:
+
+Currying is a technique of transforming a function with multiple arguments into a sequence of functions, each taking one argument at a time.
+Currying allows partial function application, where you can fix some arguments of a function in advance and create specialized functions that only require the remaining arguments.
+Currying breaks down a function into a chain of functions, allowing for more flexibility in function composition and argument order.
+Currying is about transforming the structure of a function to enable partial application and provide more flexibility in function usage.
+
+
+Higher-order functions are functions that can accept other functions as arguments and/or return functions as results.
+Higher-order functions treat functions as first-class citizens, enabling them to be passed around and manipulated as data within the programming language.
+Higher-order functions can operate on functions just like any other data type, allowing for powerful abstraction and code reuse.
+Higher-order functions are about working with functions as data and enabling functions to be parameterized or composed.
+
+
+14>Difference between var and val?
+
+val-value-constant - immutable
+var- variable - can change the value  - mutable
+
+15>What is a case class in Scala?
+Scala case classes are just regular classes which are immutable by default and decomposable through pattern matching. It uses equal method to compare instance structurally. It does not use new keyword to instantiate object. All the parameters listed in the case class are public and immutable by default.
+
+
+16>why and when we need to use case class?
+Data Modeling: Case classes are well-suited for representing data structures that are immutable and primarily used for holding data. They provide a concise and expressive way to define the structure of the data without the need for boilerplate code.
+scala
+Copy code
+case class Point(x: Double, y: Double)
+
+Pattern Matching: Case classes work seamlessly with pattern matching, a powerful construct in Scala. Pattern matching allows you to destructure and extract values from case class instances easily.
+
+def processPoint(p: Point): String = p match {
+  case Point(0, 0) => "Origin"
+  case Point(x, y) => s"($x, $y)"
+
+}
+
+case classes are useful when you want to model immutable data structures, enable pattern matching, benefit from value-based equality, and simplify object instantiation and copying. They eliminate boilerplate code by providing default implementations for common operations, making them a convenient choice for representing data in Scala.
+
+
+17>Difference between case class and normal class?
+
+Case class
+Normal class
+It has inbuilt getter/setter , toString, equals , hashcode methods
+Developer has to write getter/setter , toString, equals , hashcode methods
+pattern matching
+No pattern matching
+var obj = Emp()
+var obj = new Emp()
+Equality – it matches values inside object
+Equality – it matches object addresses
+Cannot inherit from another case class
+It can inherit from another class
+Case class implements serializable
+class does not implements serializable
+
+
+18>scala type hierarchy?
+The Scala type hierarchy is a hierarchical structure that represents the relationships between various types in the Scala programming language. At the top of the hierarchy is the Any type, which is the root type of all other types in Scala. Here's an overview of the Scala type hierarchy:
+
+Any: Any is the root type of all types in Scala. It has two direct subclasses: AnyVal and AnyRef.
+
+AnyVal: AnyVal represents value types in Scala, including numeric types (such as Int, Double, etc.) and other value-based types (Boolean, Char, etc.).
+
+AnyRef: AnyRef is the base class for all reference types in Scala, similar to java.lang.Object in Java. It is a supertype of all non-value types.
+
+Nothing: Nothing is at the bottom of the Scala type hierarchy and is a subtype of all other types. It represents a value that cannot exist and is used to indicate a computation that doesn't produce a result.
+
+Null: Null is a subtype of all reference types and represents the absence of a reference or a null reference. It is not a subtype of AnyVal.
+
+The Scala type hierarchy is designed to be expressive and flexible, allowing for rich type interactions and supporting various programming paradigms, including object-oriented and functional programming.
+
+
+19>What are partially applied functions?
+Partially applied functions are functions that have been applied to some, but not all, of their arguments. Instead of providing all the arguments in a single invocation, you can supply some arguments upfront and leave the rest to be specified later or inferred by the compiler.
+	
+def multiply(x: Int)(y: Int): Int = x * y
+
+val multiplyByTwo: Int => Int = multiply(2)   // Partially applied function
+
+val result: Int = multiplyByTwo(5)            // Invoking the partially applied function
+
+println(result)  // Output: 10
+
+Partially applied functions are a powerful feature in functional programming that allows for code reuse, composition, and flexibility. 
+
+20>What is tail recursion?
+Tail recursion is a special form of recursion where the recursive call is the last operation performed in a function. In a tail-recursive function, there are no pending operations to be performed after the recursive call returns.
+
+The key characteristic of tail recursion is that it can be optimized by the compiler or interpreter to use a technique called "tail call optimization" (TCO). 
+
+ tail recursion can improve the performance and efficiency of recursive algorithms and eliminate the risk of stack overflow. It is a useful technique in functional programming and is often used for solving problems that require recursion.
+
+
+
+

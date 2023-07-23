@@ -1,0 +1,106 @@
+from pyspark.sql import SparkSession
+from pyspark import  SparkConf
+
+if _name_ == '__main__':
+    conf = SparkConf()
+    conf.setMaster("local[2]")
+    conf.setAppName("PySpark")
+    conf.set("spark.jars.packages", "mysql:MySQL Connector/J mysql-connector-java-8.0.29")
+    spark = SparkSession.builder.config(conf=conf).getOrCreate()
+
+    jdbc_url = "jdbc:mysql://localhost:3306/"
+    connection_details = {
+               "user": "root",
+               "password": "Anvay@123",
+               "driver": "MySQL Connector/J mysql-connector-java-8.0.29",
+
+
+     df = spark.read.format("jdbc") \
+    .option("url", f"jdbc:sqlserver://localhost:1433;databaseName={june}") \
+    .option("dbtable", "members") \
+    .option("user", root) \
+    .option("password", Anvay@123) \
+    .option("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver") \
+    .load()
+
+     df1=spark.read.format("jdbc") \
+    .option("url", f"jdbc:sqlserver://localhost:1433;databaseName={june}") \
+    .option("dbtable", "sales") \
+    .option("user", root) \
+    .option("password", Anvay@123) \
+    .option("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver") \
+    .load()
+
+     df2=spark.read.format("jdbc") \
+    .option("url", f"jdbc:sqlserver://localhost:1433;databaseName={june}") \
+    .option("dbtable", "menu") \
+    .option("user", root) \
+    .option("password", Anvay@123) \
+    .option("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver") \
+    .load()
+  
+    
+ 1>    df1.join(df2, df1.col("product_id") === df2.col("product_id"))
+  df1.groupBy("customer_id").sum("price").show()
+
+
+ 2> df2.select("customer_id","order_date").distinct()
+  df3.groupBy("customer_id").agg(count("customer_id").alias("Number of Visits")).show()
+
+
+  3>Window.partitionBy("customer_id").orderBy(asc("order_date"))
+   df3.join(sales_df, Seq("product_id"), "inner")
+    df2.groupBy("customer_id","product_name").agg(min("order_date").alias("order_date"))
+  val df3 = df2.withColumn("rank", dense_rank().over(windowSpec))
+  df3.select("customer_id", "product_name", "order_date").where(col("rank") === 1).show()
+
+  4>menu_df.join(sales_df, Seq("product_id"), "inner")
+   df2.groupBy( "product_name").agg(count("product_id").alias("Number of Time"))
+   df1.withColumn("rank", dense_rank().over(Window.orderBy(desc("Number of Time"))))
+  df3.select("product_name", "Number of Time").where(col("rank") === 1).show()
+
+
+  5> "select customer_id, product_name, order_date " +
+    "from( select df2.customer_id, df2.product_id, df3.product_name, df3.join_date, sales.order_date," +
+    " DENSE_RANK() OVER (PARTITION BY members.customer_id ORDER BY sales.order_date) AS dense from members" +
+    "  inner join sales  on df1.customer_id = df3.customer_id  " +
+    "inner join menu  on sales.product_id = menu.product_id  where sales.order_date >= df1.join_date" +
+    "  order by df1.customer_id, df3.order_date) subtable  where dense = 1"
+  DataFrame = spark.sql(sqlQuery) 
+  resultDF.show() 
+
+
+6>"select customer_id, product_name, order_date from" +
+    "(select sales.customer_id, sales.product_id, df2.product_name, df1.join_date, df2.order_date," +
+    " DENSE_RANK() OVER (PARTITION BY members.customer_id ORDER BY sales.order_date DESC) AS dense from members" +
+    "  inner join sales  on df1.customer_id = df2.customer_id  inner join menu  on " +
+    "sales.product_id = df2.product_id  where df2.order_date < df2.join_date  order by members.customer_id, " +
+    "sales.order_date) subtable  where dense = 1"
+
+ DataFrame = spark.sql(sqlQuery1).resultDF1.show()
+
+ 7> select df3.customer_id, count(df2.product_id) as Total_Item, sum(df2.price) as Total_Amount " +
+    "from df2 inner join sales  on df1.customer_id = df3.customer_id  inner join menu  on " +
+    "df3.product_id = df2.product_id  where df3.order_date < df1.join_date  group by 1" 
+
+
+8> " select df2.customer_id, count(df2.product_id) as Total_Item, sum(menu.price) as Total_Amount " +
+    "from members  inner join sales  on df2.customer_id = df3.customer_id  inner join menu  on " +
+    "sales.product_id = df2.product_id  where sales.order_date < members.join_date  group by 1"
+
+  val resultDF2: DataFrame = spark.sql(sqlQuery2) 
+  resultDF2.show() 
+
+  9>"select customer_id, sum(Total_Points) as total_points from( select df3.customer_id," +
+    " case  when df3.product_name = 'sushi'  then df3.price * 20 else df2.price * 10 end as Total_Points from sales" +
+    "  inner join menu  on df2.product_id = df3.product_id) subtable  group by 1"
+  val resultDF3: DataFrame = spark.sql(sqlQuery3)
+  resultdf3.show() 
+
+  10> " select df3.customer_id, count(sales.product_id) as Total_Item, sum(menu.price * 20) as Total_Points " +
+    "from df1  inner join sales  on df1.customer_id = df1.customer_id  inner join menu  on " +
+    "sales.product_id = df3.product_id  where df3.order_date between members.join_date and " +
+    "DATE_ADD(df1.join_date)  group by 1"
+
+  val resultDF4: DataFrame = spark.sql(sqlQuery3) // Execute the SQL query using spark.sql method
+  resultDF4.show() // Show the results

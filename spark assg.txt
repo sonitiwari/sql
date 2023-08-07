@@ -1,0 +1,415 @@
+...............................................https://sparkbyexamples.com/spark/spark-sql-dataframe-join/.................................
+
+////Create a sparkSession
+
+package org.itc.com
+
+import org.apache.spark.sql.SparkSession
+
+
+object Main extends App{
+     val spark =SparkSession
+       .builder()
+       .master("local[1]")
+       .appName("spark1.com")
+       .getOrCreate();
+     println(spark)
+     println("Spark Version :"+spark.version)
+
+
+}
+
+
+// Create SparkSession object
+import org.apache.spark.sql.SparkSession
+object SparkSessionTest extends App {
+  val spark = SparkSession.builder()
+      .master("local[1]")
+      .appName("SparkByExamples.com")
+      .getOrCreate();
+  println(spark.sparkContext)
+  println("Spark App Name : "+spark.sparkContext.appname)
+}
+
+
+//
+
+val spark:SparkSession = SparkSession.builder()
+   .master("local[1]").appName("SparkByExamples.com")
+   .getOrCreate()
+
+import spark.implicits._
+val columns = Seq("language","users_count")
+val data = Seq(("Java", "20000"), ("Python", "100000"), ("Scala", "3000"))
+
+
+
+
+package com.sparkbyexamples.spark.stackoverflow
+
+import org.apache.spark.{SparkConf, SparkContext}
+
+object SparkContextOld extends App{
+
+  val conf = new SparkConf().setAppName("sparkbyexamples.com").setMaster("local[1]")
+  val sparkContext = new SparkContext(conf)
+  val rdd = sparkContext.textFile("/src/main/resources/text/alice.txt")
+
+  sparkContext.setLogLevel("ERROR")
+
+  println("First SparkContext:")
+  println("APP Name :"+sparkContext.appName);
+  println("Deploy Mode :"+sparkContext.deployMode);
+  println("Master :"+sparkContext.master);
+ // sparkContext.stop()
+  
+  val conf2 = new SparkConf().setAppName("sparkbyexamples.com-2").setMaster("local[1]")
+  val sparkContext2 = new SparkContext(conf2)
+
+  println("Second SparkContext:")
+  println("APP Name :"+sparkContext2.appName);
+  println("Deploy Mode :"+sparkContext2.deployMode);
+  println("Master :"+sparkContext2.master);
+  
+}
+
+//
+val dfFromRDD1 = rdd.toDF("language","users_count")
+dfFromRDD1.printSchema()
+
+
+
+
+//Using createDataFrame() with the Row type:-
+
+
+import scala.collection.JavaConversions._
+//From Data (USING createDataFrame and Adding schema using StructType)
+val rowData= Seq(Row("Java", "20000"), 
+               Row("Python", "100000"), 
+               Row("Scala", "3000"))
+var dfFromData3 = spark.createDataFrame(rowData,schema)
+
+
+/// Create Spark DataFrame from CSV
+val df2 = spark.read.csv("/src/resources/file.csv")
+
+//Creating from text (TXT) file
+
+
+val df2 = spark.read
+.text("/src/resources/file.txt")
+
+// Creating from JSON file
+
+
+val df2 = spark.read
+.json("/src/resources/file.json")
+
+/////DataFrame where() with Column condition.
+
+df.where(df("state") === "OH")
+    .show(false)
+
+
+  df.where("gender == 'M'")
+    .show(false)
+
+ df.where(df("state") === "OH" && df("gender") === "M")
+    .show(false)
+
+  df.where(df("name.lastname") === "Williams")
+    .show(false)
+
+JOINS:
+//All Join objects are defined at joinTypes class, In order to use these you need to import org.apache.spark.sql.catalyst.plans.{LeftOuter,Inner,....}.
+
+
+ val emp = Seq((1,"Smith",-1,"2018","10","M",3000),
+    (2,"Rose",1,"2010","20","M",4000),
+    (3,"Williams",1,"2010","10","M",1000),
+    (4,"Jones",2,"2005","10","F",2000),
+    (5,"Brown",2,"2010","40","",-1),
+      (6,"Brown",2,"2010","50","",-1)
+  )
+  val empColumns = Seq("emp_id","name","superior_emp_id","year_joined",
+       "emp_dept_id","gender","salary")
+  import spark.sqlContext.implicits._
+  val empDF = emp.toDF(empColumns:_*)
+  empDF.show(false)
+
+  val dept = Seq(("Finance",10),
+    ("Marketing",20),
+    ("Sales",30),
+    ("IT",40)
+  )
+
+  val deptColumns = Seq("dept_name","dept_id")
+  val deptDF = dept.toDF(deptColumns:_*)
+  deptDF.show(false)
+
+
+ Inner Join
+  empDF.join(deptDF,empDF("emp_dept_id") ===  deptDF("dept_id"),"inner")
+    .show(false)
+
+
+ empDF.join(deptDF,empDF("emp_dept_id") ===  deptDF("dept_id"),"outer")
+    .show(false)
+  empDF.join(deptDF,empDF("emp_dept_id") ===  deptDF("dept_id"),"full")
+    .show(false)
+  empDF.join(deptDF,empDF("emp_dept_id") ===  deptDF("dept_id"),"fullouter")
+    .show(false)
+
+
+//////////////////////////////////////////////////////////////////////////////////
+
+
+package itc.org.com
+
+
+  import org.apache.log4j.{Level, Logger}
+  import org.apache.spark.SparkConf
+  import org.apache.spark.sql.functions.{col, sum}
+  import org.apache.spark.sql.{SaveMode, SparkSession}
+  import org.apache.spark.sql.types.{IntegerType, StringType, StructField}
+
+  object sparkexa extends App {
+    //System.setProperty("hadoop.home.dir", "C:\\hadoop")
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    val sparkConf = new SparkConf()
+    sparkConf.set("spark.app.name", "spa")
+    sparkConf.set("spark.master", "local[*]")
+
+    val spark = SparkSession.builder().config(sparkConf).getOrCreate()
+
+    import spark.implicits
+
+    val df = spark.read.option("header", true).option("inferschema", true).csv("C:\\Users\\A\\Desktop\\pbb\\booking")
+    df.printSchema()
+
+    //where
+    df.where(df("flight_hour")===7)
+    df.where(df("flight_hour") === 7  && df("booking_origin") === "New Zealand").show()
+
+    //new column
+    df.withColumn("flighthour",col("flight_hour")+1).show()
+
+    //drop
+
+    val df2=df.drop("flighthour")
+    df2.show(5)
+
+    //Group by
+    df.groupBy("flight_day").sum("booking_complete")
+
+    //groupbycount
+    println("batch3")
+    df.groupBy("flight_day").count().show()
+
+    //Calculate the minimum salary of each department using min()
+    df.groupBy("flight_day").min("length_of_stay").show()
+
+    // Calculate the minimum salary of each department using max()
+    df.groupBy("flight_day").max("length_of_stay").show()
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+Spark pivot() function is used to pivot/rotate the data from one DataFrame/Dataset column into multiple columns (transform row to column) and unpivot is used to transform it back (transform columns to rows).
+
+val pivotDF = df.groupBy("Product").pivot("Country").sum("Amount")
+pivotDF.show()
+
+
+
++-------+------+-----+------+----+
+|Product|Canada|China|Mexico| USA|
++-------+------+-----+------+----+
+| Orange|  null| 4000|  null|4000|
+|  Beans|  null| 1500|  2000|1600|
+| Banana|  2000|  400|  null|1000|
+|Carrots|  2000| 1200|  null|1500|
+
+///////////////////////////////////////////////////////////////////////
+In this Spark article, you will learn how to union two or more data frames of the same schema which is used to append DataFrame to another or combine two DataFrames and also explain the differences between union and union all with Scala examples.
+
+Dataframe union() – union() method of the DataFrame is used to combine two DataFrame’s of the same structure/schema. If schemas are not the same it returns an error.
+
+DataFrame unionAll() – unionAll() is deprecated since Spark “2.0.0” version and replaced with union().
+
+
+
+
+  val df3 = df.union(df2)
+  df3.show(false)
+As you see below it returns all records.
+
+
++-------------+----------+-----+------+---+-----+
+|employee_name|department|state|salary|age|bonus|
++-------------+----------+-----+------+---+-----+
+|James        |Sales     |NY   |90000 |34 |10000|
+|Michael      |Sales     |NY   |86000 |56 |20000|
+|Robert       |Sales     |CA   |81000 |30 |23000|
+|Maria        |Finance   |CA   |90000 |24 |23000|
+|James        |Sales     |NY   |90000 |34 |10000|
+|Maria        |Finance   |CA   |90000 |24 |23000|
+|Jen          |Finance   |NY   |79000 |53 |15000|
+|Jeff         |Marketing |CA   |80000 |25 |18000|
+|Kumar        |Marketing |NY   |91000 |50 |21000|
+-------------------------------------------------
+Since the union() method returns all rows without distinct records, we will use the distinct() function to return just one record when duplicate exists.
+
+
+  val df5 = df.union(df2).distinct()
+  df5.show(false)
+
+
+///////////////////////////////////////////////////////////
+Spark collect() and collectAsList() are action operation that is used to retrieve all the elements of the RDD/DataFrame/Dataset (from all nodes) to the driver node. We should use the collect() on smaller dataset usually after filter(), group(), count() e.t.c. Retrieving on larger dataset results in out of memory.
+
+
+When to avoid Collect()
+Usually, collect() is used to retrieve the action output when you have very small result set and calling collect() on an RDD/DataFrame with a bigger result set causes out of memory as it returns the entire dataset (from all workers) to the driver hence we should avoid calling collect() on a larger dataset.
+
+collect () vs select ()
+select() method on an RDD/DataFrame returns a new DataFrame that holds the columns that are selected whereas collect() returns the entire data set.
+
+select() is a transformation function whereas collect() is an action.
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+Spark Cache and Persist are optimization techniques in DataFrame / Dataset for iterative and interactive Spark applications to improve the performance of Jobs. In this article, you will learn What is Spark cache() and persist(), how to use it in DataFrame, understanding the difference between Caching and Persistance and how to use these two with DataFrame, and Dataset using Scala examples.
+
+Though Spark provides computation 100 x times faster than traditional Map Reduce jobs, If you have not designed the jobs to reuse the repeating computations you will see degrade in performance when you are dealing with billions or trillions of data. Hence, we may need to look at the stages and use optimization techniques as one of the ways to improve performance.
+
+Using cache() and persist() methods, Spark provides an optimization mechanism to store the intermediate computation of a Spark DataFrame so they can be reused in subsequent actions.
+
+When you persist a dataset, each node stores its partitioned data in memory and reuses them in other actions on that dataset. And Spark’s persisted data on nodes are fault-tolerant meaning if any partition of a Dataset is lost, it will automatically be recomputed using the original transformations that created it.
+
+Advantages for Caching and Persistence of DataFrame
+Below are the advantages of using Spark Cache and Persist methods.
+
+Cost-efficient – Spark computations are very expensive hence reusing the computations are used to save cost.
+Time-efficient – Reusing repeated computations saves lots of time.
+Execution time – Saves execution time of the job and we can perform more jobs on the same cluster.
+
+
+
+
+  val spark:SparkSession = SparkSession.builder()
+    .master("local[1]")
+    .appName("SparkByExamples.com")
+    .getOrCreate()
+
+  //read csv with options
+  val df = spark.read.options(Map("inferSchema"->"true","delimiter"->",","header"->"true"))
+    .csv("src/main/resources/zipcodes.csv")
+  
+  val df2 = df.where(col("State") === "PR").cache()
+  df2.show(false)
+
+  println(df2.count())
+
+  val df3 = df2.where(col("Zipcode") === 704)
+
+  println(df2.count())
+///////////////////////////////////////////////
+What is Spark UDF?
+UDF a.k.a User Defined Function, If you are coming from SQL background, UDF’s are nothing new to you as most of the traditional RDBMS databases support User Defined Functions, and Spark UDF’s are similar to these.
+
+
+
+val convertCase =  (strQuote:String) => {
+    val arr = strQuote.split(" ")
+    arr.map(f=>  f.substring(0,1).toUpperCase + f.substring(1,f.length)).mkString(" ")
+}
+
+
+Create Spark UDF to use it on DataFrame
+Now convert this function convertCase() to UDF by passing the function to Spark SQL udf(), this function is available at org.apache.spark.sql.functions.udf package. Make sure you import this package before using it.
+
+
+val convertUDF = udf(convertCase)
+
+Now you can use convertUDF() on a DataFrame column. udf() function return org.apache.spark.sql.expressions.UserDefinedFunction.
+
+
+//Using with DataFrame
+df.select(col("Seqno"), 
+    convertUDF(col("Quote")).as("Quote") ).show(false)
+
+
+
+
+
+
+
+ Spark Window Functions
+Spark Window functions operate on a group of rows (like frame, partition) and return a single value for every input row. Spark SQL supports three kinds of window functions:
+
+ranking functions
+analytic functions
+aggregate functions
+
+
+
+
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.expressions.Window
+
+//row_number
+val windowSpec  = Window.partitionBy("department").orderBy("salary")
+df.withColumn("row_number",row_number.over(windowSpec))
+  .show()
+
+
+
+import org.apache.spark.sql.functions._
+//rank
+df.withColumn("rank",rank().over(windowSpec))
+  .show()
+
+
+
+import org.apache.spark.sql.functions._
+//dens_rank
+df.withColumn("dense_rank",dense_rank().over(windowSpec))
+  .show()
+
+
+import org.apache.spark.sql.functions._
+//percent_rank
+df.withColumn("percent_rank",percent_rank().over(windowSpec))
+  .show()
+
+
+
+df.withColumn("ntile",ntile(2).over(windowSpec))
+  .show()
+
+
+//cume_dist
+df.withColumn("cume_dist",cume_dist().over(windowSpec))
+  .show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

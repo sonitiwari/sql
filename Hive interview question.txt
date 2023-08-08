@@ -1,0 +1,194 @@
+ 1>  Why hive metadata is stored in sql?
+Ans:Hive is a data warehousing and SQL-like query language built on top of Hadoop, specifically designed to enable easy data summarization, ad-hoc querying, and analysis of large datasets stored in Hadoop's HDFS (Hadoop Distributed File System).
+
+
+default is derby.We can configure it to any other DB(MYsql postgre,…etc).
+Reasons to use RDBMS for storing metadata: CRUD operations not possible, Editing files or data present in HDFS is not allowed, Metadata Stores metadata using RDBMS to provide low query latency, HDFS read/write operations are time-consuming processes.
+
+
+2> Which sql is the default database for hive?
+Ans:The default database for the Hive metastore is Apache Derby. Apache Derby is an open-source, lightweight, pure-Java relational database management system (RDBMS). It is included with Hive as the default embedded database for storing metadata.
+
+When you install and configure Hive, if you don't specify an external database for the metastore, Hive will use Apache Derby as the default database to store metadata about tables, partitions, columns, data types, and other schema-related information.
+
+For more robust and scalable deployments, organizations often choose to use external SQL databases such as MySQL, PostgreSQL, Oracle, or SQL Server as the Hive metastore.
+
+3> What is managed table?
+Ans:Managed tables are Hive owned tables where the entire lifecycle of the tables' data are managed and controlled by Hive.
+Hive maintains the metadata for managed tables in its metastore. This includes information about the table schema, column names, data types, partitioning, and other structural details.Managed tables are typically easier to work with, especially for users who are less familiar with the underlying HDFS structure.
+
+
+4>What is external tabele?
+an external table is a type of table that is defined in the Hive metastore, but its data is stored outside of the control of Hive itself. Unlike managed tables, which have Hive manage both the metadata and the data files, external tables allow you to specify the location of the data files in Hadoop's HDFS (Hadoop Distributed File System) or other supported file systems, such as Amazon S3 or Azure Data Lake Storage.
+
+
+The data files associated with external tables are stored in a location that you specify when defining the table.
+
+External tables are suitable for scenarios where data is shared across multiple applications or systems. Since the data is stored externally, it can be accessed and processed by other tools and platforms, providing greater flexibility in data integration.
+
+External tables can provide performance benefits by allowing you to choose storage formats and optimizations that best suit your use case, without relying on Hive's default data storage mechanisms.
+
+External tables are a good choice when you want more control over data management and storage, need to share data with other tools or systems, or want to reuse existing data files. However, they require more manual management of data files and locations compared to managed tables.
+
+It's important to note that the choice between managed tables and external tables depends on your specific use case and requirements. Managed tables offer simplicity and convenience, while external tables offer greater flexibility and control over data storage and organization.
+
+5>When do we use external table?
+External tables in Hive are typically used in scenarios where you want more control over data storage, organization, and access. They offer flexibility and advantages that make them suitable for various use cases. Here are some situations where you might choose to use external tables:
+
+Data Sharing and Integration
+Performance Optimization
+
+6>  Diff between managed and external table?
+
+
+Managed                                                  External
+Table is managed by hive                        Table is not managed by hive
+When you delete a table, structure               When you delete a table, structure is deleted but data remains intact.Because the data is used by two or more applications
+ as well as data is deleted  
+Table is created I default hive location            Table is created In the location that user specifies
+
+
+7>  What happens if you don’t provide location to external table?
+
+Hive will assume that the data files associated with the table are located in a directory corresponding to the table's name within the default Hive warehouse directory in HDFS.
+
+The default Hive warehouse directory is typically specified in the Hive configuration, and its default location is /user/hive/warehouse in HDFS. If you don't explicitly provide a location when creating an external table, Hive will use the default warehouse directory and create a subdirectory with the table's name to look for the data files.
+
+For example, let's say you create an external table named my_external_table without specifying a location. Hive will assume that the data files for this table are located in the directory /user/hive/warehouse/my_external_table in HDFS.
+
+However, keep in mind that relying on the default location may not be ideal in all cases. It's recommended to explicitly specify the data location when creating an external table, especially if you want to have more control over where the data is stored, or if you're working with existing data files in a specific location.
+
+Here's an example of creating an external table with a specified location:
+
+sql
+Copy code
+CREATE EXTERNAL TABLE my_external_table (
+    id INT,
+    name STRING
+)
+LOCATION '/my/custom/data/location';
+In this example, the LOCATION clause is used to explicitly specify the directory where the data files for the external table are located. This provides clarity and control over the data location, ensuring that Hive uses the correct location for reading and writing data associated with the table.
+
+
+8>  Performance optimization in hive?
+Performance optimization in Hive is essential to ensure that queries and data processing tasks run efficiently and complete in a reasonable time frame. 
+Hive provides several mechanisms and best practices to optimize query performance. Here are some key performance optimization techniques in Hive:
+
+
+Partitioning: Partitioning involves dividing data into logical partitions based on one or more columns. Partitioning can significantly improve query performance by reducing the amount of data that needs to be scanned for a specific query. 
+
+Bucketing: Bucketing is a technique in which data within each partition is further divided into smaller buckets based on the hash value of a specific column. Bucketing can help evenly distribute data across buckets, which can improve join performance and reduce data skew.
+
+
+Optimized File Formats: Choosing the right file format for your data can have a significant impact on performance. Columnar storage formats like ORC (Optimized Row Columnar).and Parquet are designed for high compression and efficient column-wise data access, leading to faster query execution.
+
+Compression: Compression reduces the storage footprint and can improve query performance by reducing I/O and network bandwidth requirements. 
+
+Vectorization: Hive's vectorized query engine processes batches of rows together, reducing the overhead of processing individual rows. 
+
+caching: Caching frequently accessed data can significantly speed up subsequent queries.
+
+Data Pruning: When constructing queries, use filters and predicates to prune unnecessary data early in the query execution process. This can reduce the amount of data that needs to be processed, leading to faster query execution.
+
+
+9>   Explain partition table. Give example?
+In Hive, a partitioned table is a type of table where the data is organized into logical partitions based on the values of one or more columns. Partitioning allows Hive to store data more efficiently and enables faster query processing, as it restricts the amount of data that needs to be scanned for a specific query.
+
+CREATE TABLE sales_transactions (
+    transaction_id INT,
+    product_id INT,
+    date STRING,
+    amount DOUBLE,
+    customer_id INT
+)
+PARTITIONED BY (date);
+
+
+
+transaction_id	product_id	date	amount	customer_id
+1	101	2023-08-01	50.00	1001
+2	102	2023-08-01	75.00	1002
+3	103	2023-08-02	30.00	1003
+4	104	2023-08-02	60.00	1004
+5	105	2023-08-03	40.00	1005
+
+
+lua
+Copy code
+sales_transactions/
+|-- date=2023-08-01/
+|   |-- 000001_0
+|   |-- 000002_0
+|-- date=2023-08-02/
+|   |-- 000003_0
+|   |-- 000004_0
+|-- date=2023-08-03/
+|   |-- 000005_0
+
+
+When querying the partitioned table for data on a specific date, Hive will only scan the relevant partition, leading to faster query performance compared to scanning the entire dataset.
+
+Partitioning is especially useful for large datasets, where it helps optimize query performance and improves overall data processing efficiency.
+
+
+10> Explain bucket table. Give example?
+
+In Hive, a bucketed table is a type of table where the data is divided into smaller, evenly sized and distributed subsets called buckets based on the hash value of a specific column. Bucketing is a technique used to optimize certain types of queries, particularly join operations. Unlike partitioning, which divides data into separate directories, bucketing keeps the data within the same directory, but organizes it into distinct files based on the bucketing column's hash value.
+
+
+Both are used to enhance query execution time/query optimization. If a column has low cardinality (a smaller number of distinct values in the column) partitioning is used. On the contrary, if a column has extremely high cardinality (a greater number of distinct values in the column) bucketing is preferred.
+
+
+11>Difference between partition and bucketed table?
+
+Ans Partitioning and bucketing are both techniques used in Hive to optimize data organization and query performance.
+
+
+Partitioning: The main purpose of partitioning is to divide data into separate directories based on the values of one or more columns.
+Bucketing is primarily used to evenly distribute data within the same directory into smaller subsets called buckets.
+
+Partitioning:we use PARTITIONED BY
+Bucketing :CLUSTERED BY and INTO num_buckets BUCKETS.
+
+
+Partitioning: The number of partitions is determined by the distinct values of the partitioning column(s). Each unique combination of partitioning column values creates a separate partition.
+
+Bucketing: The number of buckets is specified explicitly when defining the bucketed table. It is essential to choose an appropriate number of buckets based on the data size and query patterns to avoid overpartitioning or underpartitioning.
+
+
+storage:partition can lead to some storage.
+
+Bucketing:Bucketing does not create additional directories but instead organizes data within the same directory into multiple smaller files, potentially reducing the storage overhead compared to partitioning.
+Usage:
+
+
+Partitioning: Partitioning is often used for data segregation based on commonly queried columns like dates, categories, or regions.
+
+Bucketing: Bucketing is mainly used to optimize specific join operations, especially when dealing with large datasets and data skew issues.
+In summary, partitioning is useful for segregating and filtering data, while bucketing is beneficial for optimizing join operations. Both techniques can be used together to further improve query performance and data organization in Hive. The choice between partitioning and bucketing (or both) depends on the specific use case and query patterns in your Hive environment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

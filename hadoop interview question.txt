@@ -59,8 +59,6 @@ YARN Resource Manager:
 In Hadoop 2, the resource management and job scheduling were handled by the ResourceManager and the ApplicationMaster.
 Hadoop 3 introduced the YARN (Yet Another Resource Negotiator) ResourceManager High Availability (RM HA) feature. It enables ResourceManager to run in an active-standby mode, eliminating the single point of failure and improving the reliability of the resource management system.
 
-Hadoop 3 introduced the YARN (Yet Another Resource Negotiator) ResourceManager High Availability (RM HA) feature. It enables ResourceManager to run in an active-standby mode, eliminating the single point of failure and improving the reliability of the resource management system.
-
 Storage Policies in HDFS:
 
 Hadoop 3 introduced storage policies in HDFS. Storage policies allow users to specify different storage tiers for different data blocks based on their access patterns and requirements.

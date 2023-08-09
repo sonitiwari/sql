@@ -194,13 +194,9 @@ Leader Election:
 In Hadoop Distributed File System (HDFS), both -put and -copyFromLocal are commands used in the Hadoop command-line interface (CLI) to copy files from the local file system to HDFS. While both commands serve the same purpose of copying files, there are some differences between them:
 
 Command Usage:
-
--put: 
-
+-put:
 copyFromLocal: 
-
 Atomicity:
-
 -put: The -put command is atomic, meaning it copies the source file or directory to the destination as a single operation. If the copy operation fails, it does not leave any partial or incomplete data in the destination.
 -copyFromLocal: The -copyFromLocal command is not atomic. It copies files one by one, and if the command fails in between, some files may have been successfully copied to the destination while others may not.
  
@@ -223,16 +219,6 @@ Storage Efficiency:
 Network Bandwidth Efficiency:
 Higher Availability: 
 
-14>  What is speculative execution?
-Speculative execution is a technique used in distributed computing and parallel processing systems, particularly in frameworks like Apache Hadoop MapReduce or Apache Spark. The purpose of speculative execution is to improve job execution performance and avoid potential delays caused by slow-running tasks or nodes in the cluster.
-
-Monitoring Task Progress:
-Identifying Stragglers:
-Launching Speculative Tasks:
-
-
-
-straggler problem:In a distributed computing environment, multiple nodes or worker machines are involved in executing tasks concurrently. Each task processes a portion of the data or performs a specific computation. In some cases, due to hardware variability or data skew, certain tasks might take longer to complete compared to others. This can lead to a situation known as the "straggler problem,"
 
 
 15>What is speculative execution?

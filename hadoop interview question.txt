@@ -252,7 +252,7 @@ Container: A container is a fundamental unit of resource allocation in YARN. It 
 The Node Manager launches and monitors containers on each node as instructed by the Resource Manager
 
 
-17>.   How does ApplicationManager and Application Master  differ?
+17>.   How does ApplicationManager and Application Master differ?
 
 In Apache Hadoop YARN, the terms "ApplicationManager" and "Application Master" refer to two different components responsible for managing applications running in the cluster. While they are related, they serve different purposes and operate at different levels within the YARN architecture.
 
@@ -349,4 +349,4 @@ After the shuffle and sort phase, the Partitioner comes into play. Its task is t
 The Partitioner uses the key of each intermediate pair to make this decision.
 
 
-
+Combiner performs the same aggregation operation as a reducer. 3. Partitioner: takes the decision that which key goes to which reducer by using Hash function.

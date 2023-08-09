@@ -139,18 +139,12 @@ Metadata Overhead:
 Memory Usage in DataNodes:
 Disk Space Fragmentation:
 Data Processing Efficiency:
-
-
 To address the small file problem, several strategies can be employed:
-
 File Merging:
-
 Periodically merge small files into larger files to reduce the number of small files and improve metadata efficiency.
 SequenceFile or Parquet Format:
-
 Use sequence files or columnar storage formats like Parquet to store small files in a more compact and efficient way.
 Combine Small Files During Ingestion:
-
 When ingesting data, try to combine small files into larger files during the data ingestion process.
 Hive Partitioning:
 
@@ -187,7 +181,7 @@ Continuous Testing and Disaster Recovery Planning:
 
 
 12>what is zookeeper?
-Apache ZooKeeper is an open-source server for highly reliable distributed coordination of cloud applications.ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of services are used in some form or another by distributed applications. Each time they are implemented there is a lot of work that goes into fixing the bugs and race conditions that are inevitable. Because of the difficulty of implementing these kinds of services, applications initially usually skimp on them, which make them brittle in the presence of change and difficult to manage. Even when done correctly, different implementations of these services lead to management complexity when the applications are deployed.
+Zookeeper is a unit where the information regarding configuration, naming and group services are stored. It is a centralized unit and using these information. Zookeeper maintains Hadoop as a Single Unit and is responsible for synchronization of Hadoop tasks.12 Apr 2018
 
 Key features of ZooKeeper:
 Hierarchical Namespace: 

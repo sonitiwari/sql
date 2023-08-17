@@ -1,0 +1,599 @@
+1>  Describe the architecture of Spark?
+The Apache Spark framework uses a master-slave architecture that consists of a driver, which runs as a  one master node, and many executors that run across as worker nodes in the cluster.
+spark has to two abstraction rdds and dag
+They are fault –tolerant ,immutable distributed collection of object.
+
+DAG:-Directed Acyclic Graph:
+It make the logical,execution plan of apark application.
+
+2>What is a cluster manager? Which ones have you used?
+A cluster manager is a system that manages the allocation and coordination of resources in a distributed computing environment.
+Cluster managers play a critical role in orchestrating the execution of distributed applications, ensuring resource isolation, fault tolerance, and scalability.
+
+
+In Apache Spark, a cluster manager is used to allocate resources to the Spark application's driver program and its executor nodes, ensuring that tasks are distributed across the cluster and executed in a coordinated manner.
+
+
+yarn
+Apache mesos
+kubernetes
+standalone cluster manager
+amazon EMR
+
+3> Difference between SparkContext and SparkSession?
+BOth are the entry point in spark apllication.key difference b/w is that spark session is preferred way to work with df and datastsets high 
+level api.it provide more consistence and simpler interface.
+the spark context is mainly used for low level operation such as rdds and braodcasting variable.
+
+
+it creates only once in the application.Spark session on the other hand can be created multiple times with in an application.
+
+
+Spark context use to access the underlaying spark enviorement and perfrom operation on it.
+Spark Session used to acccess data on stored in spark and perfrom operation on it.
+
+
+4> Describe spark modes to execute the program.
+
+Apache Spark provides different execution modes to run Spark applications, each optimized for specific use cases and deployment scenarios. The execution mode you choose depends on factors such as cluster setup, resource management, and application requirements.
+
+Local Mode:
+
+In local mode, the Spark application runs on a single machine using all available CPU cores. It's suitable for development, testing, and debugging on a small dataset.
+
+Standalone Mode:In standalone mode, Spark provides its own cluster manager, which allows you to run Spark applications on a cluster of machines without needing a separate cluster manager like YARN or Mesos.	
+
+
+
+YARN (Yet Another Resource Negotiator) is the resource management framework used in the Hadoop ecosystem. Spark applications can be executed on YARN clusters, utilizing cluster resources effectively.
+
+Kubernetes:Spark can be run on Kubernetes clusters as well. Kubernetes provides container orchestration and resource management for Spark applications, making it easier to deploy and manage Spark workloads.
+
+Amazon EMR (Elastic MapReduce):
+EMR is a managed big data platform provided by Amazon Web Services (AWS). It supports Spark applications and simplifies the provisioning and management of Spark clusters.
+
+
+Custom Cluster Managers:Spark can also be integrated with custom or third-party cluster managers. This allows organizations to leverage their existing resource management systems for running Spark applications.
+
+
+5>    Difference between RDD and DF?
+
+RDD (Resilient Distributed Dataset) and DataFrame are two fundamental abstractions in Apache Spark for working with distributed data. Both serve as building blocks for data processing tasks, but they have different characteristics, advantages, and use cases. Here's a comparison between RDDs and DataFrames:
+
+Structured vs. Unstructured Data:
+
+RDD: RDDs represent a distributed collection of data in an unstructured way. They are a lower-level abstraction that provides more control over data manipulation but lacks the structured schema of tabular data.
+DataFrame: DataFrames, on the other hand, are a higher-level abstraction that provides structured, tabular data representation similar to a relational database table. DataFrames allow you to work with structured data using SQL-like operations.
+Schema and Optimization:
+
+RDD: RDDs do not have a predefined schema. This means that data types need to be managed explicitly, and optimizations like predicate pushdown and column pruning are not as efficient as in DataFrames.
+
+DataFrame: DataFrames have a well-defined schema that includes column names, data types, and other metadata. This schema information enables Spark's Catalyst optimizer to perform query optimization, predicate pushdown, and other performance optimizations.
+Compile-Time Type Safety:
+
+RDD: RDD operations are performed at runtime, and issues related to type safety might only be discovered during execution.
+
+DataFrame: DataFrames provide compile-time type safety. The schema information allows the compiler to catch type-related errors before runtime.
+Optimization and Catalyst Query Engine:
+
+RDD: RDD operations are user-defined transformations and actions, and the optimization is limited to the basic execution plan.
+
+DataFrame: DataFrames benefit from Spark's Catalyst query optimizer, which optimizes execution plans based on the logical query plan. Catalyst can reorganize and optimize queries to improve performance.
+Performance:
+
+RDD: While RDDs provide flexibility, they can be less optimized than DataFrames, especially for complex queries and optimizations.
+
+DataFrame: DataFrames leverage Spark's optimizations for performance, making them more efficient for many data processing tasks.
+Ease of Use:
+
+RDD: RDDs offer more control and flexibility but can require more verbose code for common operations.
+
+DataFrame: DataFrames provide a higher-level, SQL-like interface, which often leads to more concise and readable code.
+API Availability:
+
+RDD: RDD API is available in all versions of Spark and is suitable for scenarios where more control and customization are required.
+
+DataFrame: DataFrames and Datasets are available in Spark 1.6 and later versions, providing more structured and optimized data processing.
+In summary, RDDs offer more flexibility and control over data processing, while DataFrames provide a structured, optimized, and SQL-like interface for working with structured data. DataFrames are generally recommended for most use cases due to their performance optimizations, schema awareness, and ease of use. However, RDDs might still be useful in scenarios where fine-grained control over data manipulation is required or when working with unstructured data.
+
+6> Transformation vs Action?
+
+In Apache Spark, transformations and actions are two fundamental types of operations that can be performed on distributed datasets, such as RDDs (Resilient Distributed Datasets) and DataFrames. They serve different purposes in the Spark computation model:
+
+Transformations:
+
+Transformations are operations that create a new dataset by applying a function to each element in the input dataset.
+Transformations are "lazy" operations, meaning they are not executed immediately when called. Instead, they build a logical execution plan (DAG - Directed Acyclic Graph) that represents the sequence of transformations to be performed.
+Spark performs optimizations on the logical execution plan before actual execution.
+Examples of transformations include map, filter, groupByKey, reduceByKey, join, and flatMap
+
+
+Actions:
+Actions are operations that trigger the execution of the transformations and return a result or perform a side effect, such as writing data to storage or printing to the console.
+When an action is called, Spark evaluates the logical execution plan generated by the previous transformations and computes the final result.
+
+Examples of actions include count, collect, saveAsTextFile, reduce, foreach, and first.
+
+7>Narrow transformation vs Wide transformation?
+Narrow Transformations:
+Narrow transformations transform data without any shuffle involve.
+Narrow transformations are operations where each input partition is used to compute one output partition.
+Example include:-map,filter,sample,union.
+
+
+Wide Transformations:
+Transformations are operations where each input partition is used to compute multiple output partitions.
+The partition may live in many partitions of parent RDDs.
+Example include:-groupby key ,intersection and join
+
+
+8>What is lazy evaluation?
+lazy evaluation is a fundamental concept used to optimize and manage distributed data processing workflows.
+
+When you apply a transformation operation on a dataset (like map, filter, join, etc.), Spark does not immediately perform the transformation. Instead, it records the transformation in the form of a logical execution plan.
+
+ lazy evaluation is a core concept in Spark that allows for optimization and efficient use of resources by deferring computation until it's necessary to produce a result. Transformations build a logical execution plan, and actions trigger the actual execution of the plan.
+
+
+9>DAG?
+It is a fundamental concept used to represent the logical execution plan of a spark application.
+The DAG captures the sequence of transformations and actions applied to RDDs and represents the data flow and dependencies between the operations. 
+
+10>Lineage Graph?
+
+the Lineage Graph is a key concept in Apache Spark that represents the dependencies between RDDs or DataFrames in a Spark application. The Lineage Graph helps in fault tolerance by reconstructing lost RDDs based on their parent RDDs and their transformations.5 May 2023
+
+
+In conclusion, the Lineage Graph is a key concept in Apache Spark that represents the dependencies between RDDs or DataFrames in a Spark application.
+
+11> Difference between DAG and Lineage?
+
+Lineage graph
+As we know, that whenever a series of transformations are performed on an RDD, they are not evaluated immediately, but lazily(Lazy Evaluation). When a new RDD has been created from an existing RDD, that new RDD contains a pointer to the parent RDD. Similarly, all the dependencies between the RDDs will be logged in a graph, rather than the actual data. This graph is called the lineage graph.
+
+Now coming to DAG,
+
+Directed Acyclic Graph(DAG)
+DAG in Apache Spark is a combination of Vertices as well as Edges. In DAG vertices represent the RDDs and the edges represent the Operation to be applied on RDD. Every edge in DAG is directed from earlier to later in a sequence.When we call anAction, the created DAG is submitted to DAG Scheduler which further splits the graph into the stages of the task.
+
+12> What happens when you submit a spark job?
+
+When you submit a Spark job, you initiate the process of executing your Spark application on a cluster.  This involves several steps, from setting up the execution environment to executing transformations and actions on your data. Here's an overview of what happens when you submit a Spark job:
+Application Setup:you package your spark application code along with jar file.
+
+Cluster Manager Interaction:You submit your Spark application to a cluster manager, which can be YARN, Mesos, Kubernetes, or the Spark Standalone cluster manager.
+
+Driver Program Launch:Driver Program Launch:
+
+The cluster manager starts the driver program, which is the main entry point of your Spark application.
+SparkContext Initialization:
+
+The driver program initializes a SparkContext (or SparkSession in Spark 2.x) as the entry point to the Spark API.
+Job and Stages Creation:
+
+When you call transformations on your input data, Spark creates a logical execution plan in the form of a directed acyclic graph (DAG). Each transformation creates a new stage in the DAG.
+Stages represent sets of transformations that can be executed together and have dependencies on previous stages.
+Optimization:
+
+Spark's Catalyst optimizer optimizes the logical execution plan by reordering and combining operations to improve performance. This creates an optimized physical execution plan.
+Task Generation:
+
+Spark breaks the stages into smaller tasks, which are the smallest units of work that can be executed on worker nodes. Tasks operate on data partitions and are distributed across the cluster.
+Task Scheduling and Execution:
+
+The driver program communicates with worker nodes to schedule tasks for execution.
+Worker nodes fetch data from storage or cache, perform the required transformations, and store the results.
+Shuffling:
+
+If transformations require data redistribution (e.g., during a groupByKey or join), Spark performs shuffling, which involves transferring data between partitions and nodes.
+Actions and Results:
+
+When you call actions (like count, collect, or saveAsTextFile), Spark triggers the execution of the transformations and actions in the DAG.
+The results of the actions are returned to the driver program, which can process or display them.
+Cleanup and Resource Deallocation:
+
+After the application finishes executing, resources are deallocated, and temporary data is cleaned up.
+The driver program terminates, and the cluster manager releases the allocated resources.
+Throughout these steps, Spark uses concepts like lineage, lazy evaluation, and the DAG scheduler to optimize execution, manage data dependencies, and provide fault tolerance. The end result is the execution of your Spark application, processing and analyzing data distributed across the cluster.
+
+
+
+13.>   Client mode vs cluster mode?
+Client Mode:
+
+Driver runs on the client machine.
+Suitable for development, testing, debugging.
+More control over the driver and application.
+Log monitoring and progress tracking from the client machine.
+Client machine resources impact job performance.
+Often used in smaller deployments.
+Cluster Mode:
+
+Driver runs on a worker node within the cluster.
+Suitable for production environments and larger-scale jobs.
+Cluster manager handles driver execution and resource allocation.
+Cluster manager ensures efficient resource utilization.
+Client machine doesn't need to be continuously active.
+Common choice for larger and more complex deployments.
+The choice between client mode and cluster mode depends on your use case, deployment environment, resource availability, and monitoring requirements.
+
+
+14>.   Difference between a DF and a DS?
+Both are high level apis.data sets are typed safe and we know about the error at compile time.df are not type safed we got the error at run time.
+df can be used in python and scala where as ds is used in java.
+
+15>Difference between a Pandas DF and a Spark DF?
+Pandas DataFrame and Spark DataFrame (DF) are both powerful data manipulation tools, 
+
+Pandas DataFrame: Pandas is a Python library that provides a DataFrame data structure for data manipulation and analysis. Pandas DataFrames are primarily designed for single-machine environments.
+Spark DataFrame: Spark is a distributed computing framework. Spark DataFrames are part of the Spark API and are designed to work with large-scale data processing in distributed clusters.
+
+API and Syntax:
+
+Pandas DataFrame: Pandas provides a rich and expressive API with a syntax that resembles SQL and traditional programming constructs.
+Spark DataFrame: Spark DataFrames offer a SQL-like API for data manipulation and querying.
+
+In summary, Pandas DataFrames are ideal for single-machine data analysis and manipulation tasks, while Spark DataFrames are designed for large-scale distributed data processing. The choice between the two depends on your data size, the need for distributed computing, and the level of parallelism required for your data tasks.
+
+
+16 Coalesce vs repartition?
+
+================repartition  vs coalesce 
+Repartition                                        Coalesce
+Increase or decreases the partitions         Decreases the partitions
+Equal size partitions                      Size of partitions will be different
+slow                                             fast
+shuffling  in involved                    Minimize shuffling
+Create new partitions                    	Uses the existing partitions
+
+
+
+
+17 suffling?
+A "shuffle" refers to the process of redistributing and reorganizing data across partitions or nodes in a distributed computing system, such as Apache Spark. Shuffling is often necessary when certain operations require data to be reorganized based on a specific key or criterion. Shuffling can have a significant impact on the performance of a distributed application and should be managed carefully.
+
+18>.   What is a logical plan vs a physical plan?
+
+In the context of query optimization and execution in distributed data processing frameworks like Apache Spark, a "logical plan" and a "physical plan" are two distinct representations of the sequence of operations or transformations to be performed on the data.
+
+A logical plan represents the high-level, abstract representation of the sequence of operations defined by the user or the query. It describes what transformations and actions need to be performed on the data without specifying how they should be executed.
+
+Physical Plan:
+A physical plan, also known as an execution plan, specifies the actual steps and details of how the operations defined in the logical plan will be executed on the physical infrastructure.
+
+19>  What is a driver?
+In the context of distributed computing frameworks like Apache Spark, a "driver" refers to a program that controls the execution of tasks and coordinates the overall execution of a Spark application. 
+
+he driver program runs on a single machine and serves as the entry point for the application, interacting with the cluster manager to allocate resources and manage the distributed computation.
+
+Entry Point: The driver program is the starting point of a Spark application.
+
+Job Submission: The driver program submits Spark jobs to the cluster manager for execution.
+
+Resource Management: 
+
+Task Scheduling:
+
+Fault Tolerance: 
+
+
+
+20>   What is an executor?
+
+In distributed computing frameworks like Apache Spark, an "executor" refers to a process or worker node that is responsible for executing tasks on behalf of the driver program. 
+
+Executors run on individual worker nodes in a cluster and perform the actual data processing and computation for Spark applications.
+
+Task Execution:
+Data Processing:
+Resource Allocation:
+Data Storage:
+Task Isolation
+
+
+21> When would you use a broadcast join?
+A "broadcast join" is a type of join operation used in distributed data processing frameworks like Apache Spark. It involves broadcasting a smaller DataFrame or dataset to all worker nodes in the cluster and performing a join with a larger DataFrame or dataset on each worker node. 
+
+Broadcast joins are particularly useful when dealing with small datasets that can fit comfortably in memory.
+
+Small DataFrame Joining with a Larger DataFrame:
+
+from pyspark.sql.functions import broadcast
+
+result_df = large_df.join(broadcast(small_df), "join_column")
+
+
+22>.   What is a broadcast variable?
+Ans-A "broadcast variable" is a feature in distributed computing frameworks like Apache Spark that allows you to efficiently share a read-only variable across all worker nodes in a cluster. 
+
+Creating a Broadcast Variable:
+
+You create a broadcast variable by calling the SparkContext.broadcast() method on the driver program. This method takes a single argument, the variable you want to broadcast.
+
+Copying Data to Worker Nodes:
+Efficient Data Access:
+Read-Only Access:
+
+we can use broadcast variable w
+
+join opertaion
+filtering
+user defined functions
+
+from pyspark import SparkContext
+
+sc = SparkContext("local", "Broadcast Example")
+lookup_data = [1, 2, 3, 4, 5]
+broadcast_var = sc.broadcast(lookup_data)
+
+def process_data(value):
+    if value in broadcast_var.value:
+        return value * 2
+    else:
+        return value
+
+input_rdd = sc.parallelize([1, 2, 3, 6, 7])
+result_rdd = input_rdd.map(process_data)
+
+23>3.   What is accumulator?
+                                                                      
+Accumulators are variables that are used for aggregating information across the executors. 
+
+
+The accumulator variable “Accum” is created using the "spark. sparkContext. accumulator(0)" with initial value 0 of type int and is used to sum all values in the RDD.#
+
+
+24>Spark Streaming and strustured streaming?
+
+Micro-Batch Processing:
+
+Spark Streaming operates in micro-batch mode, where incoming data is divided into small batches, and each batch is processed using Spark's batch processing engine.
+Data is ingested in small time intervals (e.g., every few seconds), and each batch of data is treated as a separate RDD (Resilient Distributed Dataset) for processing.
+
+
+Continuous Processing:
+
+Structured Streaming offers a more declarative, high-level API for stream processing. It's based on the concept of processing data as a continuous stream rather than dividing it into micro-batches.
+, high-level API for stream processing. It's based on the concept of processing data as a continuous stream rather than dividing it into micro-batches.
+
+
+25>What is Dynamic Partition Pruning?
+
+Dynamic Partition Pruning (DPP) is a query optimization technique used in distributed data processing frameworks like Apache Spark to improve the performance of queries involving partitioned tables. The goal of DPP is to reduce the amount of data that needs to be scanned and processed during query execution by intelligently pruning irrelevant partitions based on query predicates.
+
+-- Example query using DPP
+SELECT sales_amount
+FROM sales_data
+WHERE year = 2023 AND month = 7;
+
+
+26>   Cache v/s persist?
+
+RDD cache() method default saves it to memory (MEMORY_ONLY) whereas persist() method is used to store it to the user-defined storage level.
+
+27>.   Advantages n disadvantages of big data File formats?
+
+big data provide so many file formats Such as json ,csv, parquet and orc.
+ Compression Efficiency
+ Columnar Storage: 
+Query Performance
+Data Type Preservation:
+
+28>   what are compression formats and its specialities?
+
+A file reduced in size through the application of a compression algorithm, commonly performed to save disk space. The act of compressing a file will make it unreadable to most programs until the file is uncompressed. Most common compression utilities are PKZIP and WinZip with an extension of . zip. 
+
+29>Spark Optimization Techniques and use case?
+
+Data Serialization. Here, an in-memory object is converted into another format that can be stored in a file or sent over a network. This improves the performance of distributed applications. ...
+Caching. This is an efficient technique that is used when the data is required more often.
+Use Case Example:
+Suppose you have a large e-commerce dataset and need to perform a series of complex transformations and aggregations to analyze customer behavior over time. By employing caching or persistence on intermediate RDDs or DataFrames that are reused in different stages of your analysis, you can significantly improve performance. This optimization technique reduces the need to recompute these intermediate results, leading to faster query execution.
+
+
+30>Spark performance tuning. Share use case?
+park performance tuning involves optimizing various aspects of your Apache Spark application to achieve better execution speed, resource utilization, and efficiency.
+
+Memory Management and Allocation:
+Data Serialization:
+Data Partitioning and Skew Handling:
+Caching and Persistence
+Shuffle Optimization:
+
+31>Challenges faced in spark projects you worked on?
+
+Data Skew:
+
+Uneven data distribution leading to performance bottlenecks in certain partitions.
+Solutions: Skewed join handling, data repartitioning, or using techniques like salting.
+
+
+32>What is OOM error ? what are the possible reasons ?
+
+
+"OOM" stands for "Out of Memory." An OOM error occurs when a computer program or system exhausts its available memory resources and is unable to allocate more memory for its operations. In other words, the program tries to use more memory than what is available to it, leading to a crash or termination of the program.
+
+Memory Leak:
+
+Memory leaks occur when a program fails to release memory that is no longer needed. Over time
+
+Large Data Processing:
+
+Programs that process large datasets, especially in-memory operations like sorting or grouping, can consume a significant amount of memory.
+
+
+Parallel Processing:
+
+Parallel execution in multi-threaded or distributed systems can result in multiple threads or tasks competing for memory resources, potentially leading to memory depletion.
+
+Third-Party Libraries:
+
+Bugs or memory leaks in third-party libraries used by a program can also cause memory exhaustion.
+
+
+33> How does Spark memory management works?
+
+Spark's memory management plays a crucial role in optimizing the execution of tasks and minimizing memory-related errors such as Out of Memory (OOM) errors.
+
+Heap Memory:
+
+The heap is the main memory area where Java objects are allocated and managed by the Java Virtual Machine (JVM).
+
+Execution Memory:
+
+Execution memory is used to store data structures related to the execution of tasks, such as cached data, shuffle data, and intermediate computation results.
+
+Storage Memory:
+
+Storage memory is used to cache and store frequently accessed data, such as RDDs marked for caching using the persist() or cache() methods.
+
+Shuffle Memory:
+
+Shuffle memory is used to store intermediate data during shuffling operations, such as during map-side and reduce-side shuffles.
+Off-Heap Memory:
+
+Spark allows using off-heap memory to store its internal data structures, freeing up more heap space for user data.
+
+
+34.   How many stages and task are created?
+The number of stages and tasks created in an Apache Spark job depends on several factors, including the complexity of the computation, the transformations and actions performed on the data, the level of parallelism, and the size of the data being processed.
+
+A Spark job is divided into stages based on transformations that require shuffling or data movement between partitions.
+Stages are created at the boundaries of transformations like reduceByKey, groupByKey, or any transformation that requires shuffling.
+Each stage represents a sequence of transformations that can be executed without shuffling.
+
+Tasks:
+
+Within each stage, tasks are created to process individual partitions of data in parallel.
+The number of tasks in a stage depends on the number of partitions of the input data and the available resources (CPU cores) in the cluster.
+
+
+35>How executors are created?
+
+In Apache Spark, executors are the worker processes responsible for executing tasks and managing the data associated with those tasks. Executors are created by the Spark driver program and run on worker nodes in the cluster. Here's how executors are created in Spark:
+
+
+Cluster Manager Interaction:
+
+When a Spark application is submitted, the Spark driver communicates with the cluster manager (such as Apache Mesos, Hadoop YARN, or Kubernetes) to request resources for executors.
+
+Executor Initialization:
+
+Once the resources are allocated, the Spark driver initializes executor processes on the worker nodes.
+
+Task Execution:
+
+Executors are responsible for running the actual tasks assigned to them by the Spark driver.
+
+36>Explain spark-submit common parameters?
+When you submit a Spark application using the spark-submit script, you can provide various command-line parameters to customize the behavior of the application. These parameters allow you to configure settings related to your application's execution, cluster resources, dependencies, and more.
+
+Application JAR or Python Script:
+Specifies the JAR file or Python script that contains your Spark application code.
+
+Specifies the main class of your Spark application when submitting a JAR file.
+
+Allows you to pass command-line arguments to your Spark application.
+
+Master URL:
+
+Specifies the URL of the Spark master. For standalone mode, it's usually spark://host:port.
+
+
+37>What is data skew? How do you fix it?
+
+Data skew refers to an uneven distribution of data among partitions in a distributed computing environment, such as in Apache Spark. It can lead to performance bottlenecks and slow down the processing of tasks because some partitions have significantly more data to process than others. 
+
+Salting Technique:
+
+Add a random or deterministic prefix (salt) to the keys during data preparation.
+
+Manual repartition
+Repartition the data manually by redistributing the skewed keys among .
+
+
+Data Sampling:
+
+Use sampling techniques to estimate the skewness and adjust processing accordingly.
+
+
+
+
+38>What is key salting?
+
+Key salting aims to evenly distribute data across partitions by adding a random or deterministic prefix (salt) to the keys before processing.
+
+The salted key helps in distributing the data more evenly across partitions. Repartition the data: After salting, the data is repartitioned based on the new salted key. 
+
+
+39>Adaptive query exection?
+
+Adaptive Query Execution (AQE) is an optimization technique in Spark SQL that makes use of the runtime statistics to choose the most efficient query execution plan, which is enabled by default since Apache Spark 3.2. 0.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
